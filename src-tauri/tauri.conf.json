@@ -59,7 +59,7 @@
       "active": true,
       "endpoints": ["https://github.com/breno-777/tiny-forge/releases/latest/download/latest.json"],
       "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDgxQUUwOUNENDZEREQzMjMKUldRajA5MUd6UW11Z2Rxd1N2L0kyUHNFbEhkazRWejJ2YllSK0c3Y2VzOWV1ZmJZdTJZakE5ZlAK"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDhGOUYyNDYxMTRCQzIxRjMKUldUeklid1VZU1NmajRSK0doUjRkN2RoNklsQUFrVTB6U0JYcjRtMzNIRG1SbjUyOTgra01BNzgK"
     }
   }
 }

@@ -1,21 +1,30 @@
 import { SelectFolderCard } from "../components/cards/select-folder-card"
 import { useSettings } from "../hooks/useSettings"
 import { check } from '@tauri-apps/plugin-updater';
-import { relaunch } from '@tauri-apps/plugin-process';
+import { useState } from "preact/hooks";
 
 export const ScreenSettings = () => {
-    const outputPaths = useSettings((state) => state.outputPaths)
-    const selectOutputPath = useSettings((state) => state.selectOutputPath)
+    const { outputPaths, selectOutputPath, setHasNewUpdate, setNewUpdate } = useSettings();
+    const [checking, setChecking] = useState(false);
 
     const checkForUpdates = async () => {
-        const update = await check();
-        if (update) {
-            console.log('Update available:', update.version);
-            console.log('Notes:', update.body ?? 'No notes');
-            await update.downloadAndInstall();
-            await relaunch();
-        } else {
-            console.log('No update');
+        setChecking(true);
+        console.log('🔍 Check start');
+        try {
+            const result = await check();
+            console.log('Update result:', result);
+
+            if (result) {
+                setNewUpdate(result);
+                setHasNewUpdate(true);
+            } else {
+                setNewUpdate(null);
+                setHasNewUpdate(false);
+            }
+        } catch (error) {
+            console.error('Update check failed:', error);
+        } finally {
+            setChecking(false);
         }
     };
 
@@ -52,7 +61,7 @@ export const ScreenSettings = () => {
             <button
                 style={{ borderRadius: 4, outline: "none", border: "none", padding: "4px 8px", backgroundColor: "#F59300", cursor: "pointer" }}
                 onClick={checkForUpdates}
-            >Check for updates</button>
+            >{checking ? 'Checking...' : 'Check for updates'}</button>
         </div>
     )
 }

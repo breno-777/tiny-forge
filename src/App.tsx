@@ -5,11 +5,34 @@ import { useSettings } from "./hooks/useSettings";
 import { ScreenImageCompression } from "./screens/ImageCompression";
 import { ScreenSettings } from "./screens/Settings";
 import { ScreenVideoConverter } from "./screens/VideoConverter";
+import { UpdateToast } from "./components/cards/update-toast";
+import { check } from "@tauri-apps/plugin-updater";
 
 function App() {
   const currentAppMode = useSettings((state: any) => state.appMode);
   const isLoading = useSettings((state: any) => state.isLoading);
   const setIsLoading = useSettings((state: any) => state.setIsLoading);
+  const hasNewUpdate = useSettings((state: any) => state.hasNewUpdate);
+
+  const { autoCheckUpdates, setHasNewUpdate, setNewUpdate } = useSettings();
+
+  useEffect(() => {
+    if (autoCheckUpdates && !isLoading) {
+      const checkStartup = async () => {
+        try {
+          const result = await check();
+          if (result) {
+            setNewUpdate(result);
+            setHasNewUpdate(true);
+          }
+        } catch (e) {
+          console.error('Startup update check failed:', e);
+        }
+      };
+      checkStartup();
+    }
+  }, [autoCheckUpdates, isLoading, setHasNewUpdate, setNewUpdate]);
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -19,6 +42,8 @@ function App() {
 
   return (
     <div class="app">
+      {hasNewUpdate && <UpdateToast />}
+
       {isLoading ?
         (
           <div class="loader-container">
