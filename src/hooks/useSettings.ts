@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware"
 import { AppMode } from "../types"
 import { open } from "@tauri-apps/plugin-dialog"
 import { Store } from "@tauri-apps/plugin-store"
+import { Update } from "@tauri-apps/plugin-updater"
 
 type OutputPaths = {
     imageCompression: string | null
@@ -18,6 +19,15 @@ export type SettingsStore = {
 
     outputPaths: OutputPaths
     selectOutputPath: (type: keyof OutputPaths) => void
+
+    autoCheckUpdates: boolean,
+    setAutoCheckUpdates: (value: boolean) => void;
+
+
+    hasNewUpdate: boolean;
+    setHasNewUpdate: (hasNewUpdate: boolean) => void;
+    newUpdate: Update | null;
+    setNewUpdate: (newUpdate: Update | null) => void;
 }
 
 let tauriStorePromise: Promise<Store> | null = null
@@ -83,7 +93,18 @@ export const useSettings = create<SettingsStore>()(
                         alert("Error selecting output folder")
                     })
             },
+            
+            autoCheckUpdates: true,
+            setAutoCheckUpdates: (value) => set({ autoCheckUpdates: value }),
+
+
+            hasNewUpdate: false,
+            setHasNewUpdate: (hasNewUpdate) => set({ hasNewUpdate }),
+
+            newUpdate: null,
+            setNewUpdate: (newUpdate) => set({ newUpdate: newUpdate }),
         }),
+
         {
             name: "settings-storage",
             storage: createJSONStorage(() => customStorage),
