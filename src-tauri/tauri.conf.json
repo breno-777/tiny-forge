@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "TinyForge",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "identifier": "com.tiny-forge",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Tiny Forge v0.1.0",
+        "title": "Tiny Forge v1.0.1",
         "width": 490,
         "height": 540,
         "dragDropEnabled": true,
@@ -48,6 +48,7 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "createUpdaterArtifacts": true,
     "resources": [
       "resources/compressor"
     ]
@@ -56,10 +57,9 @@
     "store": null,
     "updater": {
       "active": true,
-      "endpoints": [
-        "https://breno-777.github.io/tiny-forge/latest.json"
-      ],
-      "pubkey": "<SET_AT_RUNTIME>"
+      "endpoints": ["https://github.com/breno-777/tiny-forge/releases/latest/download/latest.json"],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDgxQUUwOUNENDZEREQzMjMKUldRajA5MUd6UW11Z2Rxd1N2L0kyUHNFbEhkazRWejJ2YllSK0c3Y2VzOWV1ZmJZdTJZakE5ZlAK"
     }
   }
 }
