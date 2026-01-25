@@ -1,0 +1,17 @@
+{
+    "identifier": "opener-default",
+    "description": "Permite abrir caminhos e revelar arquivos no explorer.",
+    "local": true,
+    "windows": [
+        "*"
+    ],
+    "webviews": [
+        "*"
+    ],
+    "urls": [
+        "*"
+    ],
+    "permissions": [
+        "opener:default"
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "identifier": "core-event-default",
+    "description": "Permite ouvir e remover listeners de eventos core.",
+    "local": true,
+    "windows": [
+        "*"
+    ],
+    "webviews": [
+        "*"
+    ],
+    "urls": [
+        "*"
+    ],
+    "permissions": [
+        "core:event:allow-listen",
+        "core:event:allow-unlisten"
+    ]
+}

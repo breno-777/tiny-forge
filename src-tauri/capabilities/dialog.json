@@ -1,0 +1,17 @@
+{
+    "identifier": "dialog-default",
+    "description": "Permite usar diálogos do plugin dialog.",
+    "windows": [
+        "main"
+    ],
+    "webviews": [
+        "main"
+    ],
+    "urls": [
+        "local://*"
+    ],
+    "permissions": [
+        "dialog:allow-open",
+        "dialog:allow-message"
+    ]
+}

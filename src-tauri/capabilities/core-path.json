@@ -1,0 +1,18 @@
+{
+    "identifier": "core-path-default",
+    "description": "Permite usar basename/extname da API core:path.",
+    "local": true,
+    "windows": [
+        "*"
+    ],
+    "webviews": [
+        "*"
+    ],
+    "urls": [
+        "*"
+    ],
+    "permissions": [
+        "core:path:allow-basename",
+        "core:path:allow-extname"
+    ]
+}
