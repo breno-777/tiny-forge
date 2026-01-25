@@ -1,6 +1,6 @@
 type NavbarItemProps = {
     icon: preact.ComponentChild,
-    onclick: () => void,
+    onclick?: () => void,
     selected?: boolean
 }
 

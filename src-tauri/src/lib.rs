@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::env;
 use std::path::PathBuf;
-use std::process::Command;
+use tokio::process::Command as TokioCommand;
 
 fn tools_dir() -> PathBuf {
     let exe = env::current_exe().unwrap();
@@ -31,6 +31,8 @@ async fn compress_image(
     format: String,
     quality: u32,
 ) -> Result<CompressResult, String> {
+    use std::process::Command as StdCommand;
+
     let src = std::path::PathBuf::from(&src_path);
     let file_stem = src
         .file_stem()
@@ -43,7 +45,7 @@ async fn compress_image(
 
     let compressor = image_compressor_path();
 
-    let output = Command::new(compressor)
+    let output = StdCommand::new(compressor)
         .arg(&src_path)
         .arg(&dest_path_str)
         .arg(&format)
@@ -72,7 +74,7 @@ pub struct VideoResult {
 }
 
 #[tauri::command]
-fn convert_video(
+async fn convert_video(
     src: String,
     dest_path: String,
     fmt: String,
@@ -80,28 +82,36 @@ fn convert_video(
 ) -> Result<VideoResult, String> {
     let converter = video_converter_path();
 
-    let output = std::process::Command::new(converter)
+    let output = TokioCommand::new(converter)
         .arg(&src)
         .arg(&dest_path)
         .arg(&fmt)
         .arg(&res)
         .output()
+        .await
         .map_err(|e| format!("Failed to run video_converter: {e}"))?;
 
     let stdout = String::from_utf8_lossy(&output.stdout);
     let stderr = String::from_utf8_lossy(&output.stderr);
 
-    println!("video_converter stdout: {stdout}");
-    println!("video_converter stderr: {stderr}");
+    println!("=== video_converter stdout ===\n{stdout}\n=== END ===");
+    println!("=== video_converter stderr ===\n{stderr}\n=== END ===");
 
     if !output.status.success() {
         return Err(format!(
-            "video_converter failed. stdout: {stdout}, stderr: {stderr}"
+            "video_converter failed. status: {status}, stdout: {stdout}, stderr: {stderr}",
+            status = output.status
         ));
     }
 
-    let result: VideoResult = serde_json::from_str(&stdout)
-        .map_err(|e| format!("Invalid JSON from video_converter: {e} | {stdout}"))?;
+    let json_line = stdout
+        .lines()
+        .filter(|l| !l.trim().is_empty())
+        .last()
+        .ok_or_else(|| format!("No JSON output from video_converter | stdout: {stdout}"))?;
+
+    let result: VideoResult = serde_json::from_str(json_line)
+        .map_err(|e| format!("Invalid JSON from video_converter: {e} | {json_line}"))?;
 
     Ok(result)
 }
@@ -109,12 +119,12 @@ fn convert_video(
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
-        .invoke_handler(tauri::generate_handler![compress_image, convert_video])
+        .invoke_handler(tauri::generate_handler![compress_image, convert_video,])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

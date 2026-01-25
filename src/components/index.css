@@ -1,21 +1,3 @@
-progress {
-    /* margin-left: -18%; */
-    width: 100%;
-    height: 2px;
-    border-radius: 16px;
-}
-
-progress::-webkit-progress-bar {
-    /* background-color: #353535; */
-    background: transparent;
-    border-radius: 16px;
-}
-
-progress::-webkit-progress-value {
-    background-color: #F59300;
-    border-radius: 16px;
-}
-
 /* Settings Modal Styles */
 .settings-modal-container {
     top: 0;

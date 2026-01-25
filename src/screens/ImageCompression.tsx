@@ -1,7 +1,7 @@
 import { Repeat, Trash } from "lucide-preact"
 import { DropZone } from "../components/dropzone"
 import { FileStore, useFile } from "../hooks/useFile"
-import { ItemListCard } from "../components/item-list-card"
+import { ItemListCard } from "../components/cards/item-list-card"
 import { FileType, GlobalFormat, SupportedFormat } from "../types"
 import { useCompression } from "../hooks/useCompression"
 import { useFileDropPaths } from "../hooks/useFileDropPaths"
@@ -19,6 +19,7 @@ export const ScreenImageCompression = () => {
     const addFiles = useFile((state) => state.addFiles)
     const removeFile = useFile((state: FileStore) => state.removeFile)
     const removeAllFiles = useFile((state: FileStore) => state.removeAllFiles)
+
 
     const handleDropPaths = useCallback(
         async (paths: string[]) => {

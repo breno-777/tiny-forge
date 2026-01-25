@@ -11,11 +11,15 @@ export const ScreenVideoConverter = () => {
     const videoResolution = useVideo((state) => state.videoResolution);
     const updateVideoFormat = useVideo((state) => state.updateVideoFormat);
     const updateVideoResolution = useVideo((state) => state.updateVideoResolution);
+    const convertingVideo = useVideo((state) => state.convertingVideo)
+    const convertingVideoUrl = useVideo((state) => state.convertingVideoUrl)
+    const setConvertingVideo = useVideo((state) => state.setConvertingVideo)
+    const setConvertingVideoUrl = useVideo((state) => state.setConvertingVideoUrl)
 
-    const [videoUrl, setVideoUrl] = useState<string>('');
+
+    const [videoUrl, setVideoUrl] = useState<string>(convertingVideo ? convertingVideoUrl : '');
     const [videoTitle, setVideoTitle] = useState<string>('');
     const [videoExists, setVideoExists] = useState<boolean>(false);
-    const [loading, setLoading] = useState(false);
 
     // helpers
 
@@ -101,7 +105,8 @@ export const ScreenVideoConverter = () => {
             return;
         }
 
-        setLoading(true);
+        setConvertingVideo(true);
+        setConvertingVideoUrl(videoUrl);
 
         // remove caracteres inválidos para arquivo no Windows
         const safeTitle = (videoTitle || 'video').replace(/[\\/:*?"<>|]/g, '_');
@@ -122,7 +127,8 @@ export const ScreenVideoConverter = () => {
                 error?.message ?? JSON.stringify(error)
             );
         } finally {
-            setLoading(false);
+            setConvertingVideo(false);
+            setConvertingVideoUrl("");
         }
     };
 
@@ -252,7 +258,7 @@ export const ScreenVideoConverter = () => {
                                 backgroundColor: 'rgba(68, 68, 68, 0.6)',
                             }}
                             onClick={handleConvert}
-                            disabled={!videoUrl || loading || !videoExists}
+                            disabled={!videoUrl || convertingVideo || !videoExists}
                             tabIndex={-1}
                         >
                             <Repeat size={18} color="#F7F7F7" />
@@ -263,7 +269,7 @@ export const ScreenVideoConverter = () => {
                                     color: '#F7F7F7',
                                 }}
                             >
-                                {loading ? 'Converting...' : 'Convert'}
+                                {convertingVideo ? 'Converting...' : 'Convert'}
                             </p>
                         </button>
 

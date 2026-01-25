@@ -129,3 +129,17 @@ export const useFile = create<FileStore>((set, get) => ({
         set({ files: [] })
     },
 }))
+
+export const useFileStats = () => {
+    return useFile((state) => {
+        const files = state.files
+        return {
+            pending: files.filter(f => f.status === "pending").length,
+            processing: files.filter(f => f.status === "compressing").length,
+            completed: files.filter(f => f.status === "done").length,
+            error: files.filter(f => f.status === "error").length,
+            total: files.length,
+            hasActive: files.some(f => f.status === "compressing")
+        }
+    })
+}

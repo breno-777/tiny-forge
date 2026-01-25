@@ -4,9 +4,13 @@ import { SupportedVideoFormat, SupportedVideoResolution } from "../types";
 export type VideoStore = {
     videoFormat: SupportedVideoFormat;
     videoResolution: SupportedVideoResolution;
+    convertingVideo: boolean;
+    convertingVideoUrl: string;
 
     updateVideoFormat: (format: SupportedVideoFormat) => void;
     updateVideoResolution: (format: SupportedVideoResolution) => void;
+    setConvertingVideo: (value: boolean) => void;
+    setConvertingVideoUrl: (value: string) => void;
     updateFileStatus: (id: string, status: string) => void;
     updateProgress: (id: string, progress: number) => void;
 };
@@ -14,6 +18,9 @@ export type VideoStore = {
 export const useVideo = create<VideoStore>((set) => ({
     videoFormat: "mp3",
     videoResolution: "720",
+    convertingVideo: false,
+    convertingVideoUrl: "",
+
 
     updateVideoFormat: (format) => {
         set(() => ({
@@ -24,6 +31,16 @@ export const useVideo = create<VideoStore>((set) => ({
     updateVideoResolution: (resolution) => {
         set(() => ({
             videoResolution: resolution,
+        }));
+    },
+    setConvertingVideo: (value) => {
+        set(() => ({
+            convertingVideo: value,
+        }));
+    },
+    setConvertingVideoUrl: (value) => {
+        set(() => ({
+            convertingVideoUrl: value,
         }));
     },
 

@@ -1,10 +1,12 @@
 import { NavbarItem } from "./navbar-item"
 import { useSettings } from "../hooks/useSettings"
-import { Clapperboard, Image, Settings } from "lucide-preact";
+import { Clapperboard, Cloud, Image, Settings } from "lucide-preact";
+import { useState } from "preact/hooks";
+import { ProgressCard } from "./cards/progress-card";
 export const NavBar = () => {
-
     const currentAppMode = useSettings((state: any) => state.appMode);
     const updateAppMode = useSettings((state: any) => state.updateAppMode);
+    const [showTasks, setShowTasks] = useState<boolean>(false);
 
     return (
         <div style={{
@@ -32,8 +34,19 @@ export const NavBar = () => {
                 selected={currentAppMode === 'settings'}
                 onclick={() => updateAppMode('settings')}
             />
+            <div style={{ display: "flex", flexGrow: 1, height: "100%", alignItems: "flex-end" }}>
+                <div
+                    style={{ postion: "relative" }}
+                    onMouseEnter={() => setShowTasks(true)}
+                    onMouseLeave={() => setShowTasks(false)}>
+                    <NavbarItem
+                        icon={<Cloud />}
+                    />
+                    {showTasks && <div style={{ position: "absolute", bottom: 46, left: 42, zIndex: 1, animation: "none" }}><ProgressCard /></div>}
+                </div>
+            </div>
             <div />
             <div />
-        </div>
+        </div >
     )
 }

@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "Tiny Forge v0.1.0",
         "width": 490,
         "height": 540,
@@ -20,7 +21,8 @@
         "maximizable": false,
         "fullscreen": false,
         "decorations": false,
-        "devtools": false
+        "devtools": false,
+        "center": true
       }
     ],
     "security": {
@@ -48,16 +50,16 @@
     ],
     "resources": [
       "resources/compressor"
-    ],
-    "createUpdaterArtifacts": true
+    ]
   },
   "plugins": {
+    "store": null,
     "updater": {
       "active": true,
       "endpoints": [
         "https://breno-777.github.io/tiny-forge/latest.json"
       ],
-      "dialog": true
+      "pubkey": "<SET_AT_RUNTIME>"
     }
   }
 }

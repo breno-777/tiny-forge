@@ -10,25 +10,21 @@
     "core:event:allow-listen",
     "core:event:allow-unlisten",
     "core:event:default",
-
     "core:path:allow-basename",
     "core:path:allow-extname",
     "core:path:default",
-
     "core:window:default",
     "core:window:allow-start-dragging",
     "core:window:allow-close",
     "core:window:allow-minimize",
     "core:app:default",
-
     "dialog:default",
     "dialog:allow-open",
     "dialog:allow-message",
-    
     "opener:default",
-
     "fs:default",
     "fs:read-all",
-    "fs:read-meta"
+    "fs:read-meta",
+    "store:default"
   ]
 }
