@@ -20,7 +20,6 @@ export const ScreenImageCompression = () => {
     const removeFile = useFile((state: FileStore) => state.removeFile)
     const removeAllFiles = useFile((state: FileStore) => state.removeAllFiles)
 
-
     const handleDropPaths = useCallback(
         async (paths: string[]) => {
             console.debug("[ScreenImageCompression] file-drop paths", paths)
@@ -39,11 +38,7 @@ export const ScreenImageCompression = () => {
         for (const file of files) {
             if (file.status === "done") continue
             await compressOne(file)
-            // ou, se quiser rodar em paralelo:
-            // promises.push(compressOne(file))
         }
-        // para paralelo:
-        // await Promise.all(promises)
     }
 
     const handleChangeFormat = (id: string, format: SupportedFormat) => {

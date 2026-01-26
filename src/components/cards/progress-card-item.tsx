@@ -40,7 +40,6 @@ export const ProgressCardItem = ({
                 borderRadius: 6,
                 background: "#444444",
                 color: "#f7f7f7",
-                // animation: showAppear ? "appear 0.3s ease-in" : "none",
             }}
         >
             <div style={{

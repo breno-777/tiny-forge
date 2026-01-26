@@ -11,8 +11,6 @@ export function useFileDropPaths(onPaths: FileDropHandler) {
         const setup = async () => {
             try {
                 const unlisten = await win.onDragDropEvent((event) => {
-                    // console.log("[useFileDropPaths] event", event)
-
                     if (event.payload.type !== "drop") return
 
                     const paths = event.payload.paths ?? []

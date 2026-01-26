@@ -24,10 +24,6 @@ export const SelectFolderCard = ({ title, outputPath, onClick }: SelectFolderCar
                 cursor: 'pointer',
                 transition: 'all 0.3s',
             }}
-        // onMouseEnter={(e) => e.currentTarget.style.color = '#F59300'}
-        // onMouseLeave={(e) => e.currentTarget.style.color = '#F7F7F7'}
-        // onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(0.96)'}
-        // onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
         >
             <div
                 style={{

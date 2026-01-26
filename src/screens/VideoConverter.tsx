@@ -22,7 +22,6 @@ export const ScreenVideoConverter = () => {
     const [videoExists, setVideoExists] = useState<boolean>(false);
 
     // helpers
-
     function getYoutubeId(url: string): string | null {
         const regex =
             /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
@@ -88,7 +87,6 @@ export const ScreenVideoConverter = () => {
     const thumbnailUrl = getYoutubeThumbnail(videoUrl);
 
     // handlers
-
     const handleChangeUrl = (e: any) => setVideoUrl(e.target.value);
     const handleChangeTitle = (e: any) => setVideoTitle(e.target.value);
     const handleChangeFormat = (e: any) => updateVideoFormat(e.target.value);
@@ -108,7 +106,6 @@ export const ScreenVideoConverter = () => {
         setConvertingVideo(true);
         setConvertingVideoUrl(videoUrl);
 
-        // remove caracteres inválidos para arquivo no Windows
         const safeTitle = (videoTitle || 'video').replace(/[\\/:*?"<>|]/g, '_');
         const destFile = `${outputPaths.videoConverter}\\${safeTitle}.${videoFormat}`;
 
@@ -134,7 +131,6 @@ export const ScreenVideoConverter = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {/* input da URL */}
             <div
                 style={{
                     padding: 8,
@@ -163,7 +159,6 @@ export const ScreenVideoConverter = () => {
                 />
             </div>
 
-            {/* thumbnail */}
             {videoExists && thumbnailUrl && (
                 <img
                     src={thumbnailUrl}
@@ -177,7 +172,6 @@ export const ScreenVideoConverter = () => {
                 />
             )}
 
-            {/* título editável */}
             {videoExists && videoTitle && (
                 <input
                     style={{
@@ -193,7 +187,6 @@ export const ScreenVideoConverter = () => {
                 />
             )}
 
-            {/* controles + botão convert só se o vídeo for válido */}
             {videoExists && (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', gap: 8 }}>

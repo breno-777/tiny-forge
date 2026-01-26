@@ -46,15 +46,12 @@ export const useVideo = create<VideoStore>((set) => ({
 
     updateFileStatus: (_id, _status) => {
         set((state) => ({
-            // se você tiver um mapa de arquivos, atualize aqui
-            // por enquanto pode ser um stub, só para compilar:
             ...state,
         }));
     },
 
     updateProgress: (_id, _progress) => {
         set((state) => ({
-            // idem, ajuste quando implementar progresso real
             ...state,
         }));
     },

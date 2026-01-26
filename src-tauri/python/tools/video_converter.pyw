@@ -9,10 +9,6 @@ ALLOWED_FORMATS = {"mp3", "mp4", "webm", "mkv"}
 
 
 def get_yt_dlp_path() -> str:
-    """
-    Resolve o caminho do yt-dlp.exe ao lado do executável (quando congelado)
-    ou ao lado deste arquivo .py em modo dev.
-    """
     base_dir = os.path.dirname(
         os.path.abspath(sys.executable if getattr(sys, "frozen", False) else __file__)
     )
@@ -31,22 +27,20 @@ def build_cmd(src_url: str, dest: Path, fmt: str, height: int) -> list[str]:
     ]
 
     if fmt == "mp3":
-        # busca o melhor áudio disponível e converte para mp3 com ffmpeg [web:92][web:90]
         return base + [
             "-f",
             "bestaudio/best",
-            "-x",  # extract audio
+            "-x",
             "--audio-format",
-            "mp3",  # converte para mp3
+            "mp3",
             "--audio-quality",
-            "0",  # melhor qualidade VBR
+            "0",
             "-o",
             str(dest.with_suffix(".%(ext)s")),
             src_url,
         ]
 
     if fmt == "mp4":
-        # tenta usar só streams mp4 (vídeo mp4 + áudio m4a). [web:73][web:85]
         return base + [
             "-f",
             f"bestvideo[ext=mp4][height<={height}]+bestaudio[ext=m4a]/best[ext=mp4]",
@@ -56,7 +50,6 @@ def build_cmd(src_url: str, dest: Path, fmt: str, height: int) -> list[str]:
         ]
 
     if fmt == "mkv":
-        # baixa o melhor disponível (mp4 ou webm) e remuxa pra mkv (sem recode). [web:81][web:84]
         return base + [
             "-f",
             f"bestvideo[height<={height}]+bestaudio/best",
@@ -67,7 +60,6 @@ def build_cmd(src_url: str, dest: Path, fmt: str, height: int) -> list[str]:
             src_url,
         ]
 
-    # fallback (se aparecer algum outro fmt na UI)
     return base + [
         "-f",
         f"bestvideo[height<={height}]+bestaudio/best",
@@ -99,7 +91,6 @@ def convert_video(
         file=sys.stderr,
     )
 
-    # 🔒 esconder janela do yt-dlp no Windows
     startupinfo = None
     if os.name == "nt":
         startupinfo = subprocess.STARTUPINFO()
@@ -116,7 +107,6 @@ def convert_video(
     except Exception as e:
         raise RuntimeError(f"Failed to run yt-dlp: {e}") from e
 
-    # tenta achar o arquivo final
     final_dest = dest
     if not final_dest.exists():
         for ext in (fmt, "mp4", "mkv", "webm", "mp3"):
@@ -127,7 +117,6 @@ def convert_video(
 
     size_after = final_dest.stat().st_size if final_dest.exists() else 0
 
-    # se o arquivo existe, consideramos sucesso, mesmo com warnings/returncode ≠ 0
     if not final_dest.exists():
         raise RuntimeError(
             f"yt-dlp did not produce output file. code={proc.returncode}, stderr={proc.stderr or proc.stdout}"
@@ -162,7 +151,6 @@ def main() -> None:
         result = convert_video(url, dest, fmt, res)
         print(json.dumps(result, ensure_ascii=False))
     except Exception as e:
-        # inclui tipo da exceção, mensagem e, se quiser, pilha
         error_payload = {
             "error": str(e),
             "type": type(e).__name__,

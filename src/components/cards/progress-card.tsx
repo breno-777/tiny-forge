@@ -13,13 +13,9 @@ export const ProgressCard = () => {
     const value = completed
     const max = total || 1
 
-    // ✅ só mostra enquanto houver algo pra fazer
     const hasActiveTasks = processing > 0 || pending > 0
 
-    if (!hasActiveTasks) {
-        // nada processando nem pendente → não renderiza o card
-        return null
-    }
+    if (!hasActiveTasks) return null
 
     return (
         <div
