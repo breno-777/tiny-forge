@@ -76,9 +76,13 @@ export const useFile = create<FileStore>((set, get) => ({
         const uniquePaths = Array.from(new Set(paths))
         const state = get()
 
+        const cleanedFiles = state.files.filter(
+            (file) => !uniquePaths.includes(file.path)
+        )
+
         const newFilesPromises = uniquePaths.map(async (path) => {
-            if (!isAcceptedPath(path) || state.files.some((f) => f.path === path)) {
-                console.debug("[useFile] skipping unsupported or duplicate path", path)
+            if (!isAcceptedPath(path)) {
+                console.debug("[useFile] skipping unsupported path", path)
                 return null
             }
 
@@ -88,17 +92,21 @@ export const useFile = create<FileStore>((set, get) => ({
                 const format = getFormatFromExt(ext)
 
                 const file: FileType = {
-                    id: crypto.randomUUID() as FileType["id"],
+                    id: crypto.randomUUID(),
                     name,
                     size: metadata.size ?? 0,
                     path,
                     inputFormat: format,
                     status: "pending",
-                    outputFormat: state.globalFormat === "custom" ? format : state.globalFormat,
+                    outputFormat:
+                        state.globalFormat === "custom"
+                            ? format
+                            : state.globalFormat,
                     useGlobalFormat: state.globalFormat !== "custom",
                     previewUrl: await convertFileSrc(path),
                     fromDialog: true,
                     progress: 0,
+                    outputPath: null,
                 }
 
                 return file
@@ -112,9 +120,8 @@ export const useFile = create<FileStore>((set, get) => ({
         const newFiles = results.filter((file): file is FileType => file !== null)
 
         if (newFiles.length > 0) {
-            set((state) => {
-                const next = [...state.files, ...newFiles]
-                return { files: next }
+            set({
+                files: [...cleanedFiles, ...newFiles],
             })
         }
     },

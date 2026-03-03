@@ -12,6 +12,16 @@ type ItemListCardProps = {
     onConvert: () => void;
 };
 
+const SUPPORTED_FORMATS: SupportedFormat[] = [
+    "png",
+    "jpeg",
+    "jpg",
+    "webp",
+    "bmp",
+    "tiff",
+    "avif"
+];
+
 async function handleOpenFile(item: FileType) {
     if (!item.outputPath) {
         alert("This file has not been generated yet.");
@@ -114,19 +124,16 @@ export const ItemListCard = ({
                             }}
                         >
                             <select
-                                class={`custom-select ${item.outputFormat === "png"
-                                    ? "png"
-                                    : item.outputFormat === "jpeg"
-                                        ? "jpeg"
-                                        : "webp"
-                                    }`}
+                                class={`custom-select ${item.outputFormat}`}
                                 value={item.outputFormat}
                                 onChange={(e) => onChangeFormat(item.id, e.currentTarget.value as SupportedFormat)}
                                 tabIndex={-1}
                             >
-                                <option value="png">PNG</option>
-                                <option value="jpeg">JPEG</option>
-                                <option value="webp">WEBP</option>
+                                {SUPPORTED_FORMATS.map((format) => (
+                                    <option key={format} value={format}>
+                                        {format.toUpperCase()}
+                                    </option>
+                                ))}
                             </select>
                             <p
                                 style={{

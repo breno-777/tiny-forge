@@ -20,6 +20,16 @@ export const ScreenImageCompression = () => {
     const removeFile = useFile((state: FileStore) => state.removeFile)
     const removeAllFiles = useFile((state: FileStore) => state.removeAllFiles)
 
+    const SUPPORTED_FORMATS: SupportedFormat[] = [
+        "png",
+        "jpeg",
+        "jpg",
+        "webp",
+        "bmp",
+        "tiff",
+        "avif"
+    ];
+
     const handleDropPaths = useCallback(
         async (paths: string[]) => {
             console.debug("[ScreenImageCompression] file-drop paths", paths)
@@ -69,9 +79,11 @@ export const ScreenImageCompression = () => {
                                 tabIndex={-1}
                             >
                                 <option value="custom">CUSTOM</option>
-                                <option value="webp">WEBP</option>
-                                <option value="jpeg">JPEG</option>
-                                <option value="png">PNG</option>
+                                {SUPPORTED_FORMATS.map((format) => (
+                                    <option key={format} value={format}>
+                                        {format.toUpperCase()}
+                                    </option>
+                                ))}
                             </select>
 
                             <div

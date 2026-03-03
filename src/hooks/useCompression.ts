@@ -26,7 +26,10 @@ export function useCompression() {
         }
 
         const globalFormat = useFile.getState().globalFormat
-        const format: SupportedFormat = item.outputFormat || globalFormat
+        let format = item.outputFormat
+        if (!format || globalFormat === "custom") format = item.inputFormat
+
+        format = format.toLowerCase().trim() as SupportedFormat
 
         console.debug("[useCompression] Starting:", {
             id: item.id,

@@ -10,8 +10,15 @@ export interface ModeConfig {
 }
 
 
-
-export type SupportedFormat = "png" | "jpeg" | "webp";
+export type SupportedFormat =
+  | "png"
+  | "jpeg"
+  | "jpg"
+  | "webp"
+  | "bmp"
+  | "tiff"
+  | "gif"
+  | "avif";
 export type GlobalFormat = SupportedFormat | "custom"
 export type FileType = {
   id: string;
